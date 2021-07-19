@@ -1,7 +1,8 @@
 export enum RequestType {
+	USERLOGIN = 'login',
 	MESSAGE = 'message',
 	INIT_REQUEST = 'init_request',
-	ERROR = 'arf error',
+	ERROR = 'error',
 }
 
 export enum ResponseCode {

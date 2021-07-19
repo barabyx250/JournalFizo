@@ -18,16 +18,6 @@ export const LoginPage: React.FC = () => {
   const [newPass, setPass] = useState("");
   const [newLogin, setLogin] = useState("");
 
-  useEffect(() => {
-    ConnectionManager.registerResponseHandler(
-      RequestType.MESSAGE,
-      (m: any) => {}
-    );
-    ConnectionManager.registerResponseHandler(RequestType.ERROR, (m: any) => {
-      console.log(m);
-    });
-  });
-
   return (
     <Form name="normal_login" className="login-form">
       <div className="login_page_logo_block">
@@ -66,7 +56,7 @@ export const LoginPage: React.FC = () => {
         <Button
           onClick={() => {
             let dataArr = [newLogin, newPass];
-            ConnectionManager.getInstance().emit(RequestType.MESSAGE, dataArr);
+            ConnectionManager.getInstance().emit(RequestType.USERLOGIN, dataArr);
           }}
           type="primary"
           htmlType="submit"

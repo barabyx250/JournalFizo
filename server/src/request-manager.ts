@@ -12,15 +12,18 @@ export class RequestManager {
   >();
 
   public static on(socket: SocketIO.Socket, io: SocketIO.Server) {
-    socket.on(RequestType.MESSAGE, async (m: any) => {
+    socket.on(RequestType.USERLOGIN, async (m: any) => {
       try {
         let dataArr = m;
         if (dataArr[0] === "admin" && dataArr[1] === "Bius2019") {
-          m = true;
-          socket.emit(RequestType.MESSAGE, m);
+          m = "admin";
+          socket.emit(RequestType.USERLOGIN, m);
+        } else if (dataArr[0] === "свінчук" && dataArr[1] === "свінчук") {
+          m = "свінчук";
+          socket.emit(RequestType.USERLOGIN, m);
         } else {
           m = false;
-          socket.emit(RequestType.MESSAGE, m);
+          socket.emit(RequestType.USERLOGIN, m);
         }
       } catch (e) {
         socket.emit(RequestType.ERROR, "Не валідні данні");

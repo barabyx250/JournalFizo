@@ -8,10 +8,12 @@ import GroupList from "./GroupListPage";
 import ListStandarts from "./ListStandarts";
 import Statistic from "./Statistic";
 import LoginPage from "./loginpage";
+import UsersAcc from "./UserAcc";
 
 export const MainPage: React.FC<{}> = () => {
   const [munuItemLogin, setMenuItemLogin] = useState("block");
   const [munuItemListStandarts, setMunuItemListStandarts] = useState("none");
+  const [menuItemUserAcc, setMenuItemUserAcc] = useState("none");
 
   const { Sider, Content } = Layout;
 
@@ -24,8 +26,14 @@ export const MainPage: React.FC<{}> = () => {
   };
 
   useEffect(() => {
-    ConnectionManager.registerResponseHandler(RequestType.MESSAGE, (m: any) => {
-      if (m === true) {
+    ConnectionManager.registerResponseHandler(RequestType.USERLOGIN, (m: any) => {
+      if (m === "admin") {
+        setMenuItemLogin("none");
+        setMunuItemListStandarts("block");
+        setMenuItemUserAcc("block");
+        success();
+        // window.location.href = '/listStatistic';
+      } else if (m === "свінчук") {
         setMenuItemLogin("none");
         setMunuItemListStandarts("block");
         success();
@@ -63,7 +71,10 @@ export const MainPage: React.FC<{}> = () => {
               <Menu.Item key="4">
                 <Link to="/listStatistic">Статистика</Link>
               </Menu.Item>
-              <Menu.Item key="5" style={{ display: munuItemLogin }}>
+              <Menu.Item key="5" style={{ display: menuItemUserAcc }}>
+                <Link to="/usersAcc">Користувачі</Link>
+              </Menu.Item>
+              <Menu.Item key="6" style={{ display: munuItemLogin }}>
                 <Link to="/login">Увійти</Link>
               </Menu.Item>
               <Button
@@ -96,6 +107,7 @@ export const MainPage: React.FC<{}> = () => {
             <Route path="/listGroup" component={GroupList}></Route>
             <Route path="/listStandarts" component={ListStandarts}></Route>
             <Route path="/listStatistic" component={Statistic}></Route>
+            <Route path="/usersAcc" component={UsersAcc}></Route>
             <Route path="/login" component={LoginPage}></Route>
           </Content>
         </Layout>
