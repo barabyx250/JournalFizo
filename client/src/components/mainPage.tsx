@@ -25,27 +25,41 @@ export const MainPage: React.FC<{}> = () => {
     message.success("Вхід виконано!");
   };
 
-  useEffect(() => {
-    ConnectionManager.registerResponseHandler(RequestType.USERLOGIN, (m: any) => {
-      if (m === "admin") {
-        setMenuItemLogin("none");
+  let checkToken = () => {
+    let token = localStorage.getItem('token');
+    if(token) {
+      setMenuItemLogin("none");
         setMunuItemListStandarts("block");
         setMenuItemUserAcc("block");
         success();
-        // window.location.href = '/listStatistic';
-      } else if (m === "свінчук") {
-        setMenuItemLogin("none");
-        setMunuItemListStandarts("block");
-        success();
-        // window.location.href = '/listStatistic';
-      } else if (m === false) {
-        error();
-      }
-    });
-    ConnectionManager.registerResponseHandler(RequestType.ERROR, (m: any) => {
-      message.error(m);
-    });
-  }, []);
+    }
+  }
+
+  window.onload = function() {
+    checkToken();
+  }
+
+  // useEffect(() => {
+  //   ConnectionManager.registerResponseHandler(RequestType.USERLOGIN, (m: any) => {
+  //     if (m === "admin") {
+  //       setMenuItemLogin("none");
+  //       setMunuItemListStandarts("block");
+  //       setMenuItemUserAcc("block");
+  //       success();
+  //       // window.location.href = '/listStatistic';
+  //     } else if (m === "свінчук") {
+  //       setMenuItemLogin("none");
+  //       setMunuItemListStandarts("block");
+  //       success();
+  //       // window.location.href = '/listStatistic';
+  //     } else if (m === false) {
+  //       error();
+  //     }
+  //   });
+  //   ConnectionManager.registerResponseHandler(RequestType.ERROR, (m: any) => {
+  //     message.error(m);
+  //   });
+  // }, []);
 
   return (
     <Layout style={{ width: "100%", height: "100vh" }}>
@@ -71,24 +85,28 @@ export const MainPage: React.FC<{}> = () => {
               <Menu.Item key="4">
                 <Link to="/listStatistic">Статистика</Link>
               </Menu.Item>
-              <Menu.Item key="5" style={{ display: menuItemUserAcc }}>
+              {/* <Menu.Item key="5" style={{ display: menuItemUserAcc }}>
                 <Link to="/usersAcc">Користувачі</Link>
-              </Menu.Item>
+              </Menu.Item> */}
               <Menu.Item key="6" style={{ display: munuItemLogin }}>
                 <Link to="/login">Увійти</Link>
               </Menu.Item>
               <Button
                 onClick={() => {
-                  window.location.href = "/login";
+                  localStorage.removeItem('token');
+                  window.location.reload();
                 }}
                 type="ghost"
                 style={{
-                  width: "100%",
-                  paddingLeft: "25px",
-                  textAlign: "left",
+                  width: "95%",
+                  textAlign: "center",
                   border: "none",
-                  color: "#969595",
+                  color: '#ffffff',
                   display: munuItemListStandarts,
+                  position: 'absolute',
+                  bottom: "10px",
+                  backgroundColor: "#51c98d",
+                  marginLeft: '2%'
                 }}
               >
                 Вийти
@@ -107,7 +125,7 @@ export const MainPage: React.FC<{}> = () => {
             <Route path="/listGroup" component={GroupList}></Route>
             <Route path="/listStandarts" component={ListStandarts}></Route>
             <Route path="/listStatistic" component={Statistic}></Route>
-            <Route path="/usersAcc" component={UsersAcc}></Route>
+            {/* <Route path="/usersAcc" component={UsersAcc}></Route> */}
             <Route path="/login" component={LoginPage}></Route>
           </Content>
         </Layout>

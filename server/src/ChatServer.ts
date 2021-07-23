@@ -5,6 +5,8 @@ import { ChatMessage } from './types';
 import { createServer, Server } from 'http';
 import { RequestManager } from './request-manager';
 var cors = require('cors');
+import jwt = require('express-jwt');
+import jsonwebtoken = require('jsonwebtoken');
 
 export class ChatServer {
   public static readonly PORT: number = 8080;
@@ -41,6 +43,14 @@ export class ChatServer {
         console.log('Client disconnected');
       });
     });
+
+    const jwtSecret = 'secret123';
+    this._app.get('/jwt', (req, res) => {
+      const token = jsonwebtoken.sign({ user: 'johndoe' }, jwtSecret);
+      res.cookie('token', token, { httpOnly: true });
+      res.json({ token });
+    });
+    this._app.use(jwt({ secret: jwtSecret, algorithms: ['HS256'] }));
   }
 
   public getApp(): express.Application {
